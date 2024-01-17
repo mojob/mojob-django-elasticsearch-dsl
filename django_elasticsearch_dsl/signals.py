@@ -217,7 +217,7 @@ else:
             except LookupError:
                 pass
             else:
-                if model.objects.__class__.__name__ == 'SoftDeleteManager'
+                if model.objects.__class__.__name__ == 'SoftDeleteManager':
                     # Need to handle SoftDeleteManager differently because doing objects.get fails
                     registry.update_related(
                         model.objects.with_deleted().get(pk=pk)
