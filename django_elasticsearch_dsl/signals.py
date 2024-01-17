@@ -216,7 +216,7 @@ else:
                             model.objects.get(pk=pk)
                         )
                 except ObjectDoesNotExist as e:
-                    print(f'Error registry_update_related_task: {e}')
+                    print(f'Error registry_update_task: {e}')
 
 
         @shared_task()
