@@ -205,15 +205,19 @@ else:
             except LookupError:
                 pass
             else:
-                if model.objects.__class__.__name__ == 'SoftDeleteManager':
-                    # Need to handle SoftDeleteManager differently because doing objects.get fails if object is deleted
-                    registry.update(
-                        model.objects.with_deleted().get(pk=pk)
-                    )
-                else:
-                    registry.update(
-                        model.objects.get(pk=pk)
-                    )
+                try:
+                    if model.objects.__class__.__name__ == 'SoftDeleteManager':
+                        # Need to handle SoftDeleteManager differently because doing objects.get fails if object is deleted
+                        registry.update(
+                            model.objects.with_deleted().get(pk=pk)
+                        )
+                    else:
+                        registry.update(
+                            model.objects.get(pk=pk)
+                        )
+                except ObjectDoesNotExist as e:
+                    print(f'Error registry_update_related_task: {e}')
+
 
         @shared_task()
         def registry_update_related_task(pk, app_label, model_name):
@@ -223,12 +227,15 @@ else:
             except LookupError:
                 pass
             else:
-                if model.objects.__class__.__name__ == 'SoftDeleteManager':
-                    # Need to handle SoftDeleteManager differently because doing objects.get fails if object is deleted
-                    registry.update_related(
-                        model.objects.with_deleted().get(pk=pk)
-                    )
-                else:
-                    registry.update_related(
-                        model.objects.get(pk=pk)
-                    )
+                try:
+                    if model.objects.__class__.__name__ == 'SoftDeleteManager':
+                        # Need to handle SoftDeleteManager differently because doing objects.get fails if object is deleted
+                        registry.update_related(
+                            model.objects.with_deleted().get(pk=pk)
+                        )
+                    else:
+                        registry.update_related(
+                            model.objects.get(pk=pk)
+                        )
+                except ObjectDoesNotExist as e:
+                    print(f'Error registry_update_related_task: {e}')
