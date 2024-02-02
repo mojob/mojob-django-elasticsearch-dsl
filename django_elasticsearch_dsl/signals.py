@@ -162,7 +162,7 @@ else:
                         object_list = [related]
                     else:
                         object_list = related
-                    bulk_data = list(doc_instance._get_actions(object_list, action)),
+                    bulk_data = list(doc_instance._get_actions(object_list, action))
                     self.registry_delete_task.delay(doc_instance.__module__, doc_instance.__class__.__name__, bulk_data)
 
         @shared_task()
@@ -174,7 +174,7 @@ else:
             but the delete needs to be processed before the database record is deleted to obtain the associated data.
             """
             print('registry_delete_task: ', doc_class, bulk_data)
-            doc_instance = getattr(import_module(doc_module), doc_class)
+            doc_instance = getattr(import_module(doc_module), doc_class)()
             print(doc_instance)
             parallel = True
             doc_instance._bulk(bulk_data, parallel=parallel)
@@ -196,7 +196,7 @@ else:
                         object_list = [related]
                     else:
                         object_list = related
-                    bulk_data = list(doc_instance.get_actions(object_list, action)),
+                    bulk_data = list(doc_instance.get_actions(object_list, action))
                     self.registry_delete_task.delay(doc_instance.__module__, doc_instance.__class__.__name__, bulk_data)
 
         @shared_task()
