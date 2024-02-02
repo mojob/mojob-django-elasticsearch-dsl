@@ -173,9 +173,7 @@ else:
             The update operation can re-read the updated data from the database to ensure eventual consistency, 
             but the delete needs to be processed before the database record is deleted to obtain the associated data.
             """
-            print('registry_delete_task: ', doc_class, bulk_data)
             doc_instance = getattr(import_module(doc_module), doc_class)()
-            print(doc_instance)
             parallel = True
             doc_instance._bulk(bulk_data, parallel=parallel)
 
